@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>ru.nde.improvedscala</groupId>
+    <artifactId>ImprovedScala</artifactId>
+    <packaging>jar</packaging>
+    <version>0.1-SNAPSHOT</version>
+    <name>Improved Scala Jar</name>
+
+    <properties>
+        <version.scala>2.8.1</version.scala>
+        <version.javax.inject>1</version.javax.inject>
+        <version.javaee.api>6.0</version.javaee.api>
+        <version.javax.mail>1.4.5</version.javax.mail>
+        <version.groovy>2.1.0</version.groovy>
+        <version.gmaven.runtime>1.4</version.gmaven.runtime>
+        <version.mysql.connector>5.1.15</version.mysql.connector>
+
+
+        <version.maven.plugin.scala>2.15.2</version.maven.plugin.scala>
+        <version.maven.plugin.compiler>2.3.2</version.maven.plugin.compiler>
+        <version.maven.plugin.source>2.2.1</version.maven.plugin.source>
+        <version.maven.plugin.checkstyle>2.9.1</version.maven.plugin.checkstyle>
+        <version.maven.plugin.pmd>2.7.1</version.maven.plugin.pmd>
+        <version.maven.plugin.embedded.glassfish>3.1.1</version.maven.plugin.embedded.glassfish>
+        <version.maven.plugin.release>2.2.1</version.maven.plugin.release>
+        <version.maven.plugin.resources>2.6</version.maven.plugin.resources>
+        <version.maven.plugin.ejb>2.3</version.maven.plugin.ejb>
+        <version.maven.gmaven.plugin>1.4</version.maven.gmaven.plugin>
+
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.jdk>1.6</project.build.jdk>
+        <project.build.debug>false</project.build.debug>
+        <targetJdk>1.6</targetJdk>
+    </properties>
+
+
+    <build>
+        <defaultGoal>package</defaultGoal>
+
+        <!-- Ресурсы для рабочих исходников-->
+        <resources>
+            <resource>
+                <directory>src/main/resources/</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <!-- Ресурсы для тестового окружения -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources/</directory>
+                <!--<targetPath>./</targetPath>-->
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <!--
+                Compiling support
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${version.maven.plugin.compiler}</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <source>${project.build.jdk}</source>
+                    <target>${project.build.jdk}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <debug>${project.build.debug}</debug>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                    <fork>true</fork>
+                    <meminitial>128m</meminitial>
+                    <maxmem>512m</maxmem>
+                </configuration>
+            </plugin>
+
+            <!--
+               Scala
+            -->
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <version>${version.maven.plugin.scala}</version>
+                <executions>
+                    <execution>
+                        <id>scala-compile-first</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>scala-test-compile</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <sourceDir>src/main/scala</sourceDir>
+                    <jvmArgs>
+                        <jvmArg>-Xms64m</jvmArg>
+                        <jvmArg>-Xmx800m</jvmArg>
+                    </jvmArgs>
+                    <scalaVersion>${version.scala}</scalaVersion>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${version.maven.plugin.resources}</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <!-- this is used for inheritance merges -->
+                        <phase>package</phase>
+                        <!-- append to the packaging phase. -->
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- генерация jar с исходниками для репозитория -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${version.maven.plugin.source}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.6</version>
+
+            </plugin>
+
+
+            <!--
+                Release management
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${version.maven.plugin.release}</version>
+                <configuration>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <pushChanges>false</pushChanges>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>perform</goal>
+                        </goals>
+                        <configuration>
+                            <pomFileName>core/pom.xml</pomFileName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
+</project>
