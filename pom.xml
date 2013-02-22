@@ -10,7 +10,7 @@
     <name>Improved Scala Jar</name>
 
     <properties>
-        <version.scala>2.8.1</version.scala>
+        <version.scala>2.9</version.scala>
         <version.javax.inject>1</version.javax.inject>
         <version.javaee.api>6.0</version.javaee.api>
         <version.javax.mail>1.4.5</version.javax.mail>
