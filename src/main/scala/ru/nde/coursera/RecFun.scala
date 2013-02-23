@@ -20,7 +20,10 @@ object RecFun {
   /**
    * Exercise 1
    */
-  def pascal(c: Int, r: Int): Int = ???
+  def pascal(c: Int, r: Int): Int = {
+
+     10
+  }
 
   /**
    * Exercise 2
