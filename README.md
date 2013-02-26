@@ -4,7 +4,7 @@ ImprovedScala
 Учебный проект на Scala
 
 
-
+`
 {
     “me”: {
         “name“   : “Dmitriy Nosov”,
@@ -12,4 +12,4 @@ ImprovedScala
                     “wesayso@yandex.ru”],
         “twitter”: “@NosovDE”
     }
-}
+}`
